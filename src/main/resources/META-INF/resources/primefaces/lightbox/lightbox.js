@@ -9,15 +9,15 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
         this._super(cfg);
 
-        if (this.cfg.selector === undefined) {
+        if (!this.cfg.selector) {
             this.links = this.jq.children(':not(.ui-lightbox-inline)');
         } else {
             this.links = this.cfg.selector.call(this);
         }
 
-        for(i=0;i<this.links.length;i++){
-            let next = i+1 < this.links.length ? i+1 : 0;
-            let prev = i === 0 ? this.links.length > 1 ? this.links.length-1 : 0 : i-1;
+        for(let i = 0; i < this.links.length; i++){
+            let next = (i + 1) % this.links.length;
+            let prev = i === 0 ? this.links.length - 1 : i - 1;
 
             this.links.get(i).nextItem = next;
             this.links.get(i).prevItem = prev;
