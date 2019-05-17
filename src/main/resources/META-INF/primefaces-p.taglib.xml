@@ -14280,6 +14280,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to get list of elements to display in the lightbox.]]>
+            </description>
+            <name>selector</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when lightbox is displayed.]]>
             </description>
             <name>onShow</name>

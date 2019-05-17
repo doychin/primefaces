@@ -9,7 +9,19 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
         this._super(cfg);
 
-        this.links = this.jq.children(':not(.ui-lightbox-inline)');
+        if (this.cfg.selector === undefined) {
+            this.links = this.jq.children(':not(.ui-lightbox-inline)');
+        } else {
+            this.links = this.cfg.selector.call(this);
+        }
+
+        for(i=0;i<this.links.length;i++){
+            let next = i+1 < this.links.length ? i+1 : 0;
+            let prev = i === 0 ? this.links.length > 1 ? this.links.length-1 : 0 : i-1;
+
+            this.links.get(i).nextItem = next;
+            this.links.get(i).prevItem = prev;
+        }
 
         this.createPanel();
 
@@ -101,16 +113,15 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
             _self.hideNavigators();
 
+            let index;
             if(nav.hasClass('ui-lightbox-nav-left')) {
-                var index = _self.current == 0 ? _self.links.length - 1 : _self.current - 1;
-
-                _self.links.eq(index).trigger('click');
+                index = _self.links.get(_self.current).prevItem;
             }
             else {
-                var index = _self.current == _self.links.length - 1 ? 0 : _self.current + 1;
-
-                _self.links.eq(index).trigger('click');
+                index = _self.links.get(_self.current).nextItem;
             }
+
+            _self.links.eq(index).trigger('click');
 
             e.preventDefault();
         });
@@ -138,7 +149,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
             setTimeout(function() {
                 _self.imageDisplay.attr('src', link.attr('href'));
-                _self.current = link.index();
+                _self.current = _self.links.index(link.get(0));
 
                 var title = link.attr('title');
                 if(title) {

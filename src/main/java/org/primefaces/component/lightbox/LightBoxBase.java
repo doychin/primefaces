@@ -47,7 +47,8 @@ public abstract class LightBoxBase extends UIComponentBase implements Widget {
         visible,
         blockScroll,
         onShow,
-        onHide
+        onHide,
+        selector
     }
 
     public LightBoxBase() {
@@ -145,6 +146,14 @@ public abstract class LightBoxBase extends UIComponentBase implements Widget {
 
     public void setOnHide(String onHide) {
         getStateHelper().put(PropertyKeys.onHide, onHide);
+    }
+
+    public void setSelector(String selector) {
+        getStateHelper().put(PropertyKeys.selector, selector);
+    }
+
+    public String getSelector() {
+        return (String) getStateHelper().eval(PropertyKeys.selector, null);
     }
 
     @Override
